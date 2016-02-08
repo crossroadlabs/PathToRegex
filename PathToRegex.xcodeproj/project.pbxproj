@@ -10,6 +10,7 @@
 		65E7DAD21C690A4300C5D00A /* PathToRegex.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65E7DAC71C690A4300C5D00A /* PathToRegex.framework */; };
 		65E7DAD71C690A4300C5D00A /* PathToRegexTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65E7DAD61C690A4300C5D00A /* PathToRegexTests.swift */; };
 		65E7DAE21C690B0E00C5D00A /* PathToRegex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65E7DAE11C690B0E00C5D00A /* PathToRegex.swift */; };
+		65E7DAE41C690C5000C5D00A /* Regex.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65E7DAE31C690C5000C5D00A /* Regex.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,6 +30,7 @@
 		65E7DAD61C690A4300C5D00A /* PathToRegexTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PathToRegexTests.swift; sourceTree = "<group>"; };
 		65E7DAD81C690A4300C5D00A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		65E7DAE11C690B0E00C5D00A /* PathToRegex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PathToRegex.swift; sourceTree = "<group>"; };
+		65E7DAE31C690C5000C5D00A /* Regex.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Regex.framework; path = Carthage/Build/Mac/Regex.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -36,6 +38,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				65E7DAE41C690C5000C5D00A /* Regex.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -53,6 +56,7 @@
 		65E7DABD1C690A4300C5D00A = {
 			isa = PBXGroup;
 			children = (
+				65E7DAE31C690C5000C5D00A /* Regex.framework */,
 				65E7DAC91C690A4300C5D00A /* PathToRegex */,
 				65E7DAD51C690A4300C5D00A /* PathToRegexTests */,
 				65E7DAC81C690A4300C5D00A /* Products */,
@@ -311,6 +315,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = PathToRegex/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -331,6 +339,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = PathToRegex/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
