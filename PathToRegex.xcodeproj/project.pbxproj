@@ -74,10 +74,10 @@
 		65E7DABD1C690A4300C5D00A = {
 			isa = PBXGroup;
 			children = (
-				65E7DAE31C690C5000C5D00A /* Regex.framework */,
 				65E7DAC91C690A4300C5D00A /* PathToRegex */,
 				65E7DAD51C690A4300C5D00A /* PathToRegexTests */,
 				65E7DAC81C690A4300C5D00A /* Products */,
+				65E7DAE31C690C5000C5D00A /* Regex.framework */,
 			);
 			sourceTree = "<group>";
 		};
