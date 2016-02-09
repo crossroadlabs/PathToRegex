@@ -1,1 +1,1 @@
-github "crossroadlabs/Regex" "develop"
+github "crossroadlabs/Regex" ~> 0.4
