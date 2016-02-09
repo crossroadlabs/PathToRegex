@@ -3,6 +3,8 @@
 [![GitHub license](https://img.shields.io/badge/license-LGPL v3-lightgrey.svg)](https://raw.githubusercontent.com/crossroadlabs/Express/master/LICENSE)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 ![Platform OS X | Linux](https://img.shields.io/badge/platform-OS%20X%20%7C%20Linux-orange.svg)
+[![Build Status](https://travis-ci.org/crossroadlabs/PathToRegex.svg?branch=master)](https://travis-ci.org/crossroadlabs/PathToRegex)
+[![GitHub release](https://img.shields.io/github/release/crossroadlabs/PathToRegex.svg)](https://github.com/crossroadlabs/PathToRegex/releases)
 
 A Swift library translating paths with wildcards like `/api/user/:name` or `/api/user/*` into regular expressions.
 
