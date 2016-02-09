@@ -20,6 +20,7 @@
 //===----------------------------------------------------------------------===//
 
 import XCTest
+import Regex
 @testable import PathToRegex
 
 class PathToRegexTests: XCTestCase {
@@ -34,20 +35,38 @@ class PathToRegexTests: XCTestCase {
         super.tearDown()
     }
     
-    func testExample() {
+    func testPaths() {
+        let digitOptionalVar = try! pathToRegex("/:test(\\d+)?")
+        XCTAssert("/123" =~ digitOptionalVar)
+        XCTAssert("/" =~ digitOptionalVar)
+        XCTAssertFalse("/asd" =~ digitOptionalVar)
         
-//        print(PathToRegex.parse("/:test(\\d+)?"))
-//        print(PathToRegex.parse("/route(\\d+)"))
-//        print(PathToRegex.parse("/*"))
+        XCTAssertEqual("123", digitOptionalVar.findFirst("/123")!.group("test")!)
         
-        print((try! pathToRegex("/:test(\\d+)?")).pattern)
-        print((try! pathToRegex("/route(\\d+)")).pattern)
-        print((try! pathToRegex("/*")).pattern)
-        print((try! pathToRegex("/:one/:two")).pattern)
-        print((try! pathToRegex("/api/:method.:format")).pattern)
+        let routeDigitEnding = try! pathToRegex("/route(\\d+)")
+        XCTAssertFalse("/123" =~ routeDigitEnding)
+        XCTAssert("/route123" =~ routeDigitEnding)
+        XCTAssertFalse("/route" =~ routeDigitEnding)
         
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+        let everythingStartingSlash = try! pathToRegex("/*")
+        XCTAssert("/route123" =~ everythingStartingSlash)
+        XCTAssert("/route" =~ everythingStartingSlash)
+        XCTAssert("/" =~ everythingStartingSlash)
+        XCTAssert("/123" =~ everythingStartingSlash)
+        XCTAssert("/123/123/123" =~ everythingStartingSlash)
+        
+        let twoVars = try! pathToRegex("/:one/:two")
+        XCTAssert("/route/123" =~ twoVars)
+        XCTAssertFalse("/route" =~ twoVars)
+        XCTAssertFalse("/route/" =~ twoVars)
+        XCTAssertFalse("/route/123/and" =~ twoVars)
+        
+        XCTAssertEqual("route", twoVars.findFirst("/route/123")!.group("one")!)
+        XCTAssertEqual("123", twoVars.findFirst("/route/123")!.group("two")!)
+        
+        let methodFormat = try! pathToRegex("/api/user/:id.:format")
+        XCTAssertEqual("123", methodFormat.findFirst("/api/user/123.json")!.group("id")!)
+        XCTAssertEqual("json", methodFormat.findFirst("/api/user/123.json")!.group("format")!)
     }
     
     func testPerformanceExample() {
