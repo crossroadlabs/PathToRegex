@@ -11,6 +11,9 @@
 		65E7DAD71C690A4300C5D00A /* PathToRegexTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65E7DAD61C690A4300C5D00A /* PathToRegexTests.swift */; };
 		65E7DAE21C690B0E00C5D00A /* PathToRegex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65E7DAE11C690B0E00C5D00A /* PathToRegex.swift */; };
 		65E7DAE41C690C5000C5D00A /* Regex.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65E7DAE31C690C5000C5D00A /* Regex.framework */; };
+		65E7DAE51C6912C400C5D00A /* Regex.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65E7DAE31C690C5000C5D00A /* Regex.framework */; };
+		65E7DAE71C6912FA00C5D00A /* Regex.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 65E7DAE31C690C5000C5D00A /* Regex.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		65E7DAE81C6912FA00C5D00A /* PathToRegex.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 65E7DAC71C690A4300C5D00A /* PathToRegex.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -22,6 +25,20 @@
 			remoteInfo = PathToRegex;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		65E7DAE61C6912E000C5D00A /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				65E7DAE71C6912FA00C5D00A /* Regex.framework in CopyFiles */,
+				65E7DAE81C6912FA00C5D00A /* PathToRegex.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		65E7DAC71C690A4300C5D00A /* PathToRegex.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PathToRegex.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -46,6 +63,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				65E7DAE51C6912C400C5D00A /* Regex.framework in Frameworks */,
 				65E7DAD21C690A4300C5D00A /* PathToRegex.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -128,6 +146,7 @@
 				65E7DACD1C690A4300C5D00A /* Sources */,
 				65E7DACE1C690A4300C5D00A /* Frameworks */,
 				65E7DACF1C690A4300C5D00A /* Resources */,
+				65E7DAE61C6912E000C5D00A /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -357,6 +376,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				INFOPLIST_FILE = PathToRegexTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = xyz.crossroadlabs.PathToRegexTests;
@@ -368,6 +391,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				INFOPLIST_FILE = PathToRegexTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = xyz.crossroadlabs.PathToRegexTests;

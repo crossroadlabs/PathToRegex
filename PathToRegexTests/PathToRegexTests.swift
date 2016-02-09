@@ -35,6 +35,17 @@ class PathToRegexTests: XCTestCase {
     }
     
     func testExample() {
+        
+//        print(PathToRegex.parse("/:test(\\d+)?"))
+//        print(PathToRegex.parse("/route(\\d+)"))
+//        print(PathToRegex.parse("/*"))
+        
+        print((try! pathToRegex("/:test(\\d+)?")).pattern)
+        print((try! pathToRegex("/route(\\d+)")).pattern)
+        print((try! pathToRegex("/*")).pattern)
+        print((try! pathToRegex("/:one/:two")).pattern)
+        print((try! pathToRegex("/api/:method.:format")).pattern)
+        
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
     }
