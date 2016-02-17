@@ -26,11 +26,7 @@ let package = Package(
     targets: [
         Target(
             name: "PathToRegex"
-        ),
-        Target(
-            name: "PathToRegexTests",
-            dependencies: [.Target(name:"PathToRegex")]
-        ),
+        )
     ],
     dependencies: [.Package(url: "https://github.com/ypopovych/Regex.git", majorVersion: 1)]
 )

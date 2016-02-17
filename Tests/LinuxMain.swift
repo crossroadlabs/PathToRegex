@@ -1,4 +1,4 @@
-//===--- main.swift --------------------------------------------------------===//
+//===--- LinuxMain.swift ---------------------------------------------------===//
 //
 //Copyright (c) 2016 Daniel Leping (dileping)
 //
@@ -20,6 +20,8 @@
 //===----------------------------------------------------------------------===//
 
 import XCTest
+
+@testable import PathToRegextest
 
 XCTMain([
 	PathToRegexTests(),

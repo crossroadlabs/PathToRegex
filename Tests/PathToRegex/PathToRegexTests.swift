@@ -25,12 +25,6 @@ import Regex
 
 class PathToRegexTests: XCTestCase {
 
-    var allTests : [(String, () throws -> Void)] {
-        return [
-            ("testPaths", testPaths)
-        ]
-    }
-
     func testPaths() {
         let digitOptionalVar = try! pathToRegex("/:test(\\d+)?")
         XCTAssert("/123" =~ digitOptionalVar)
@@ -65,3 +59,13 @@ class PathToRegexTests: XCTestCase {
         XCTAssertEqual("json", methodFormat.findFirst("/api/user/123.json")!.group("format")!)
     } 
 }
+
+#if os(Linux)
+extension PathToRegexTests : XCTestCaseProvider {
+    var allTests : [(String, () throws -> Void)] {
+        return [
+            ("testPaths", testPaths)
+        ]
+    }
+}
+#endif
