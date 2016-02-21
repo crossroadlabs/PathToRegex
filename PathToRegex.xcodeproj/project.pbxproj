@@ -76,8 +76,8 @@
 			children = (
 				65E7DAC91C690A4300C5D00A /* PathToRegex */,
 				65E7DAD51C690A4300C5D00A /* PathToRegexTests */,
+				962A8B391C74E5B8008E2BB3 /* Frameworks */,
 				65E7DAC81C690A4300C5D00A /* Products */,
-				65E7DAE31C690C5000C5D00A /* Regex.framework */,
 			);
 			sourceTree = "<group>";
 		};
@@ -105,7 +105,16 @@
 				65E7DAD61C690A4300C5D00A /* PathToRegexTests.swift */,
 				65E7DAD81C690A4300C5D00A /* Info.plist */,
 			);
-			path = PathToRegexTests;
+			name = PathToRegexTests;
+			path = Tests/PathToRegex;
+			sourceTree = "<group>";
+		};
+		962A8B391C74E5B8008E2BB3 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				65E7DAE31C690C5000C5D00A /* Regex.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -380,7 +389,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/Mac",
 				);
-				INFOPLIST_FILE = PathToRegexTests/Info.plist;
+				INFOPLIST_FILE = Tests/PathToRegex/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = xyz.crossroadlabs.PathToRegexTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -395,7 +404,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/Mac",
 				);
-				INFOPLIST_FILE = PathToRegexTests/Info.plist;
+				INFOPLIST_FILE = Tests/PathToRegex/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = xyz.crossroadlabs.PathToRegexTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";

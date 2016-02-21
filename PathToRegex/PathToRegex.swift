@@ -182,9 +182,7 @@ func tokensToRegex (tokens:[Token], options:Options = Options()) throws -> Regex
     var groups = [String]()
     
     // Iterate over the tokens and create our regexp string.
-    for (var i = 0; i < tokens.count; i++) {
-        let token = tokens[i]
-        
+    for token in tokens {
         switch token {
             case .Simple(token: let token): route += escapeString(token)
             case .Complex(name: let tokenName, prefix: let prefix, delimeter: _, optional: let optional, repeating: let repeating, pattern: let pattern):
