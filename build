@@ -5,4 +5,7 @@ ST="swift test"
 $SB --fetch
 rm -rf ./Packages/*/Tests
 $SB
-$ST
+
+if [ "$1" == "test" ]; then
+	$ST
+fi
