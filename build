@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+if [ "$1" == "clean" ]; then
+        rm -rf Packages .build
+	exit
+fi
+
 SB=`which swift-build`
 ST="swift test"
 $SB --fetch
