@@ -20,6 +20,7 @@
 //===----------------------------------------------------------------------===//
 
 import Foundation
+import Boilerplate
 import Regex
 
 private extension Optional {
@@ -83,7 +84,7 @@ let PATH_REGEXP:Regex = [
     // "/route(\\d+)"  => [undefined, undefined, undefined, "\d+", undefined, undefined]
     // "/*"            => ["/", undefined, undefined, undefined, undefined, "*"]
     "([\\/.])?(?:(?:\\:(\\w+)(?:\\(((?:\\\\.|[^()])+)\\))?|\\(((?:\\\\.|[^()])+)\\))([+*?])?|(\\*))"
-    ].joinWithSeparator("|").r!
+    ].joined(separator: "|").r!
 
 /**
 * Parse a string for the raw tokens.
@@ -104,15 +105,15 @@ public func parse (str:String) -> [Token] {
         let m = res.matched
         
         let offset = res.range.startIndex
-        path += str.substringWithRange(Range<String.Index>(start: index, end: offset))
-        index = offset.advancedBy(m.characters.count)
+        path += str.substring(with: index ..< offset)
+        index = offset.advanced(by: m.characters.count)
         
         let escaped = res.group(1)
         
         // Ignore already escaped sequences.
         if let escaped = escaped {
-            let one = escaped.startIndex.advancedBy(1)
-            path += escaped.substringWithRange(StringRange(start: one, end: one.advancedBy(1)))
+            let one = escaped.startIndex.advanced(by: 1)
+            path += escaped.substring(with: one ..< one.advanced(by: 1))
             continue
         }
     
@@ -149,7 +150,7 @@ public func parse (str:String) -> [Token] {
     
     // Match any characters still remaining.
     if (index < str.endIndex) {
-        path += str.substringFromIndex(index)
+        path += str.substring(from: index)
     }
     
     // If the path exists, push it onto the end.
@@ -219,7 +220,7 @@ func tokensToRegex (tokens:[Token], options:Options = Options()) throws -> Regex
     if !strict {
         route = {
             if endsWithSlash {
-                return route.substringToIndex(route.endIndex.advancedBy(-2))
+                return route.substring(to: route.endIndex.advanced(by: -2))
             } else {
                 return route
             }
