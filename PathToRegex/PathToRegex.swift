@@ -104,7 +104,7 @@ public func parse (str:String) -> [Token] {
         let m = res.matched
         
         let offset = res.range.startIndex
-        path += str.substringWithRange(Range<String.Index>(start: index, end: offset))
+        path += str.substringWithRange(index ..< offset)
         index = offset.advancedBy(m.characters.count)
         
         let escaped = res.group(1)
@@ -112,7 +112,7 @@ public func parse (str:String) -> [Token] {
         // Ignore already escaped sequences.
         if let escaped = escaped {
             let one = escaped.startIndex.advancedBy(1)
-            path += escaped.substringWithRange(StringRange(start: one, end: one.advancedBy(1)))
+            path += escaped.substringWithRange(one ..< one.advancedBy(1))
             continue
         }
     
