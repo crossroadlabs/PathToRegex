@@ -61,11 +61,11 @@ class PathToRegexTests: XCTestCase {
 }
 
 #if os(Linux)
-extension PathToRegexTests : XCTestCaseProvider {
-    var allTests : [(String, () throws -> Void)] {
-        return [
-            ("testPaths", testPaths)
-        ]
-    }
+extension PathToRegexTests {
+	static var allTests : [(String, PathToRegexTests -> () throws -> Void)] {
+		return [
+			("testPaths", testPaths),
+		]
+	}
 }
 #endif

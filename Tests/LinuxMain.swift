@@ -21,8 +21,8 @@
 
 import XCTest
 
-@testable import PathToRegextest
+@testable import PathToRegexTestSuite
 
 XCTMain([
-	PathToRegexTests(),
+	testCase(PathToRegexTests.allTests),
 ])
