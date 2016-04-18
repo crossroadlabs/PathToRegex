@@ -24,7 +24,17 @@ import Regex
 @testable import PathToRegex
 
 class PathToRegexTests: XCTestCase {
-
+    
+    override func setUp() {
+        super.setUp()
+        // Put setup code here. This method is called before the invocation of each test method in the class.
+    }
+    
+    override func tearDown() {
+        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        super.tearDown()
+    }
+    
     func testPaths() {
         let digitOptionalVar = try! pathToRegex("/:test(\\d+)?")
         XCTAssert("/123" =~ digitOptionalVar)
@@ -57,15 +67,13 @@ class PathToRegexTests: XCTestCase {
         let methodFormat = try! pathToRegex("/api/user/:id.:format")
         XCTAssertEqual("123", methodFormat.findFirst("/api/user/123.json")!.group("id")!)
         XCTAssertEqual("json", methodFormat.findFirst("/api/user/123.json")!.group("format")!)
-    } 
-}
-
-#if os(Linux)
-extension PathToRegexTests : XCTestCaseProvider {
-    var allTests : [(String, () throws -> Void)] {
-        return [
-            ("testPaths", testPaths)
-        ]
     }
+    
+    func testPerformanceExample() {
+        // This is an example of a performance test case.
+        self.measureBlock {
+            // Put the code you want to measure the time of here.
+        }
+    }
+    
 }
-#endif
