@@ -29,13 +29,13 @@ public struct Options {
 }
 
 public enum TokenName {
-    case Literal(name:String)
-    case Ordinal(index:Int)
+    case literal(name:String)
+    case ordinal(index:Int)
 }
 
 public enum Token {
-    case Simple(token:String)
-    case Complex(name:TokenName, prefix:String, delimeter:String, optional:Bool, repeating:Bool, pattern:String)
+    case simple(token:String)
+    case complex(name:TokenName, prefix:String, delimeter:String, optional:Bool, repeating:Bool, pattern:String)
 }
 
 /**
@@ -111,7 +111,7 @@ public func parse(path str:String) -> [Token] {
     
         // Push the current path onto the tokens.
         if !path.isEmpty {
-            tokens.append(.Simple(token: path))
+            tokens.append(.simple(token: path))
             path = ""
         }
         
@@ -129,15 +129,15 @@ public func parse(path str:String) -> [Token] {
         
         let patternEscaped = escape(group: pattern)
         let tokenName:TokenName = name.map { name in
-            TokenName.Literal(name: name)
+            .literal(name: name)
             //wierd construct
         }.getOr {
-            let result:TokenName = TokenName.Ordinal(index: key)
+            let result:TokenName = .ordinal(index: key)
             key += 1
             return result
         }
         
-        tokens.append(.Complex(name: tokenName, prefix: prefix ?? "", delimeter: delimiter, optional: optional, repeating: repeating, pattern: patternEscaped))
+        tokens.append(.complex(name: tokenName, prefix: prefix ?? "", delimeter: delimiter, optional: optional, repeating: repeating, pattern: patternEscaped))
     }
     
     // Match any characters still remaining.
@@ -147,7 +147,7 @@ public func parse(path str:String) -> [Token] {
     
     // If the path exists, push it onto the end.
     if !path.isEmpty {
-        tokens.append(.Simple(token: path))
+        tokens.append(.simple(token: path))
     }
     
     return tokens
@@ -167,7 +167,7 @@ func tokensToRegex (_ tokens:[Token], options:Options = Options()) throws -> Reg
     let lastToken = tokens.last
     let endsWithSlash = lastToken.map { lastToken in
         switch lastToken {
-            case .Simple(token: let lastToken): return lastToken =~ "\\/$"
+            case .simple(token: let lastToken): return lastToken =~ "\\/$"
             default: return false
         }
     }.getOr(else: false)
@@ -177,12 +177,12 @@ func tokensToRegex (_ tokens:[Token], options:Options = Options()) throws -> Reg
     // Iterate over the tokens and create our regexp string.
     for token in tokens {
         switch token {
-            case .Simple(token: let token): route += escape(string: token)
-            case .Complex(name: let tokenName, prefix: let prefix, delimeter: _, optional: let optional, repeating: let repeating, pattern: let pattern):
+            case .simple(token: let token): route += escape(string: token)
+            case .complex(name: let tokenName, prefix: let prefix, delimeter: _, optional: let optional, repeating: let repeating, pattern: let pattern):
                 
                 switch tokenName {
-                    case .Literal(name: let name): groups.append(name)
-                    case .Ordinal(index: let index): groups.append(String(index))
+                    case .literal(name: let name): groups.append(name)
+                    case .ordinal(index: let index): groups.append(String(index))
                 }
                 
                 let prefix = escape(string: prefix)
