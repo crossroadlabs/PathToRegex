@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6549351D1CB54CC900E9E648 /* Boilerplate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6549351C1CB54CC900E9E648 /* Boilerplate.framework */; };
+		6549351F1CB54CDA00E9E648 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6549351E1CB54CDA00E9E648 /* Result.framework */; };
+		654935201CB54CEB00E9E648 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6549351E1CB54CDA00E9E648 /* Result.framework */; };
+		654935211CB54CEB00E9E648 /* Boilerplate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6549351C1CB54CC900E9E648 /* Boilerplate.framework */; };
+		654935221CB54D0B00E9E648 /* Result.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6549351E1CB54CDA00E9E648 /* Result.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		654935231CB54D0B00E9E648 /* Boilerplate.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6549351C1CB54CC900E9E648 /* Boilerplate.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		65E7DAD21C690A4300C5D00A /* PathToRegex.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65E7DAC71C690A4300C5D00A /* PathToRegex.framework */; };
 		65E7DAD71C690A4300C5D00A /* PathToRegexTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65E7DAD61C690A4300C5D00A /* PathToRegexTests.swift */; };
 		65E7DAE21C690B0E00C5D00A /* PathToRegex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65E7DAE11C690B0E00C5D00A /* PathToRegex.swift */; };
@@ -35,12 +41,16 @@
 			files = (
 				65E7DAE71C6912FA00C5D00A /* Regex.framework in CopyFiles */,
 				65E7DAE81C6912FA00C5D00A /* PathToRegex.framework in CopyFiles */,
+				654935221CB54D0B00E9E648 /* Result.framework in CopyFiles */,
+				654935231CB54D0B00E9E648 /* Boilerplate.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		6549351C1CB54CC900E9E648 /* Boilerplate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Boilerplate.framework; path = Carthage/Build/Mac/Boilerplate.framework; sourceTree = "<group>"; };
+		6549351E1CB54CDA00E9E648 /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = Carthage/Build/Mac/Result.framework; sourceTree = "<group>"; };
 		65E7DAC71C690A4300C5D00A /* PathToRegex.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PathToRegex.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		65E7DACC1C690A4300C5D00A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		65E7DAD11C690A4300C5D00A /* PathToRegexTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PathToRegexTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -55,6 +65,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6549351F1CB54CDA00E9E648 /* Result.framework in Frameworks */,
+				6549351D1CB54CC900E9E648 /* Boilerplate.framework in Frameworks */,
 				65E7DAE41C690C5000C5D00A /* Regex.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -65,6 +77,8 @@
 			files = (
 				65E7DAE51C6912C400C5D00A /* Regex.framework in Frameworks */,
 				65E7DAD21C690A4300C5D00A /* PathToRegex.framework in Frameworks */,
+				654935201CB54CEB00E9E648 /* Result.framework in Frameworks */,
+				654935211CB54CEB00E9E648 /* Boilerplate.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,6 +126,8 @@
 		962A8B391C74E5B8008E2BB3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6549351E1CB54CDA00E9E648 /* Result.framework */,
+				6549351C1CB54CC900E9E648 /* Boilerplate.framework */,
 				65E7DAE31C690C5000C5D00A /* Regex.framework */,
 			);
 			name = Frameworks;
@@ -351,6 +367,7 @@
 				INFOPLIST_FILE = PathToRegex/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				PRODUCT_BUNDLE_IDENTIFIER = xyz.crossroadlabs.PathToRegex;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -375,6 +392,7 @@
 				INFOPLIST_FILE = PathToRegex/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				PRODUCT_BUNDLE_IDENTIFIER = xyz.crossroadlabs.PathToRegex;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
