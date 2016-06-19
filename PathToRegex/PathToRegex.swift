@@ -23,19 +23,24 @@ import Foundation
 import Boilerplate
 import Regex
 
-public struct Options {
-    public var strict:Bool = false
-    public var end:Bool = true
+public struct Options : OptionSet {
+    public let rawValue: UInt
+    
+    public init(rawValue: UInt) { self.rawValue = rawValue }
+    
+    public static let strict = Options(rawValue: 1)
+    public static let end = Options(rawValue: 2)
+    public static let `default`:Options = [.end]
 }
 
-public enum TokenName {
+public enum TokenID {
     case literal(name:String)
     case ordinal(index:Int)
 }
 
 public enum Token {
     case simple(token:String)
-    case complex(name:TokenName, prefix:String, delimeter:String, optional:Bool, repeating:Bool, pattern:String)
+    case complex(name:TokenID, prefix:String, delimeter:String, optional:Bool, repeating:Bool, pattern:String)
 }
 
 /**
@@ -128,11 +133,11 @@ public func parse(path str:String) -> [Token] {
         let pattern = capture.getOr(else: group.getOr(else: asterisk.map{_ in ".*"}.getOr(else: "[^" + delimiter + "]+?")))
         
         let patternEscaped = escape(group: pattern)
-        let tokenName:TokenName = name.map { name in
+        let tokenName:TokenID = name.map { name in
             .literal(name: name)
             //wierd construct
         }.getOr {
-            let result:TokenName = .ordinal(index: key)
+            let result:TokenID = .ordinal(index: key)
             key += 1
             return result
         }
@@ -160,9 +165,10 @@ public func parse(path str:String) -> [Token] {
 * @param  {Object=} options
 * @return {!RegExp}
 */
-func tokensToRegex (_ tokens:[Token], options:Options = Options()) throws -> Regex {
-    let strict = options.strict
-    let end = options.end
+func tokensToRegex (_ tokens:[Token], options:Options = .default) throws -> Regex {
+    let strict = options.contains(.strict)
+    let end = options.contains(.end)
+    
     var route = ""
     let lastToken = tokens.last
     let endsWithSlash = lastToken.map { lastToken in
