@@ -44,7 +44,7 @@ public enum Token {
 * @param  {string} str
 * @return {string}
 */
-func escapeString(str:String) -> String {
+func escape(string str:String) -> String {
     let rr = try! Regex(pattern: "([.+*?=^!:${}()[\\\\]|\\/])")
     return rr.replaceAll(in: str, with: "\\\\$1")
 }
@@ -55,8 +55,8 @@ func escapeString(str:String) -> String {
 * @param  {string} group
 * @return {string}
 */
-func escapeGroup (group:String) -> String {
-    return "([=!:$\\/()])".r!.replaceAll(in: group, with: "\\\\$1")
+func escape(group grp:String) -> String {
+    return "([=!:$\\/()])".r!.replaceAll(in: grp, with: "\\\\$1")
 }
 
 /**
@@ -83,7 +83,7 @@ let PATH_REGEXP:Regex = [
 * @param  {string} str
 * @return {!Array}
 */
-public func parse (str:String) -> [Token] {
+public func parse(path str:String) -> [Token] {
     var tokens = [Token]()
     var key = 0
     var index = str.startIndex
@@ -95,16 +95,17 @@ public func parse (str:String) -> [Token] {
     for res in match {
         let m = res.matched
         
-        let offset = res.range.startIndex
+        let offset = res.range.lowerBound
         path += str.substring(with: index ..< offset)
-        index = offset.advanced(by: m.characters.count)
+        index = str.index(offset, offsetBy: m.characters.count)
         
         let escaped = res.group(at: 1)
         
         // Ignore already escaped sequences.
         if let escaped = escaped {
-            let one = escaped.startIndex.advanced(by: 1)
-            path += escaped.substring(with: one ..< one.advanced(by: 1))
+            let one = escaped.index(escaped.startIndex, offsetBy: 1)
+            let end = escaped.index(one, offsetBy: 1)
+            path += escaped.substring(with: one ..< end)
             continue
         }
     
@@ -126,7 +127,7 @@ public func parse (str:String) -> [Token] {
         let delimiter = prefix ?? "/"
         let pattern = capture.getOr(else: group.getOr(else: asterisk.map{_ in ".*"}.getOr(else: "[^" + delimiter + "]+?")))
         
-        let patternEscaped = escapeGroup(pattern)
+        let patternEscaped = escape(group: pattern)
         let tokenName:TokenName = name.map { name in
             TokenName.Literal(name: name)
             //wierd construct
@@ -159,7 +160,7 @@ public func parse (str:String) -> [Token] {
 * @param  {Object=} options
 * @return {!RegExp}
 */
-func tokensToRegex (tokens:[Token], options:Options = Options()) throws -> Regex {
+func tokensToRegex (_ tokens:[Token], options:Options = Options()) throws -> Regex {
     let strict = options.strict
     let end = options.end
     var route = ""
@@ -176,7 +177,7 @@ func tokensToRegex (tokens:[Token], options:Options = Options()) throws -> Regex
     // Iterate over the tokens and create our regexp string.
     for token in tokens {
         switch token {
-            case .Simple(token: let token): route += escapeString(token)
+            case .Simple(token: let token): route += escape(string: token)
             case .Complex(name: let tokenName, prefix: let prefix, delimeter: _, optional: let optional, repeating: let repeating, pattern: let pattern):
                 
                 switch tokenName {
@@ -184,7 +185,7 @@ func tokensToRegex (tokens:[Token], options:Options = Options()) throws -> Regex
                     case .Ordinal(index: let index): groups.append(String(index))
                 }
                 
-                let prefix = escapeString(prefix)
+                let prefix = escape(string: prefix)
                 var capture = pattern
                 
                 if repeating {
@@ -211,7 +212,7 @@ func tokensToRegex (tokens:[Token], options:Options = Options()) throws -> Regex
     if !strict {
         route = {
             if endsWithSlash {
-                return route.substring(to: route.endIndex.advanced(by: -2))
+                return route.substring(to: route.index(route.endIndex, offsetBy: -2))
             } else {
                 return route
             }
@@ -229,7 +230,7 @@ func tokensToRegex (tokens:[Token], options:Options = Options()) throws -> Regex
     return try Regex(pattern: "^" + route, groupNames: groups)
 }
 
-public func pathToRegex(path:String) throws -> Regex {
-    let tokens = parse(path)
+public func pathToRegex(_ path:String) throws -> Regex {
+    let tokens = parse(path: path)
     return try tokensToRegex(tokens)
 }
