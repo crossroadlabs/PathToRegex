@@ -23,15 +23,6 @@ import Foundation
 import Boilerplate
 import Regex
 
-private extension Optional {
-    func orElse(@autoclosure other:() -> Wrapped) -> Wrapped {
-        guard let result = self else {
-            return other()
-        }
-        return result
-    }
-}
-
 public struct Options {
     public var strict:Bool = false
     public var end:Bool = true
@@ -132,20 +123,20 @@ public func parse (str:String) -> [Token] {
         
         let repeating = suffix == "+" || suffix == "*"
         let optional = suffix == "?" || suffix == "*"
-        let delimiter = prefix.orElse("/")
-        let pattern = capture.orElse(group.orElse(asterisk.map{_ in ".*"}.orElse("[^" + delimiter + "]+?")))
+        let delimiter = prefix ?? "/"
+        let pattern = capture.getOr(else: group.getOr(else: asterisk.map{_ in ".*"}.getOr(else: "[^" + delimiter + "]+?")))
         
         let patternEscaped = escapeGroup(pattern)
         let tokenName:TokenName = name.map { name in
             TokenName.Literal(name: name)
             //wierd construct
-        }.orElse( {
+        }.getOr {
             let result:TokenName = TokenName.Ordinal(index: key)
             key += 1
             return result
-        }())
+        }
         
-        tokens.append(.Complex(name: tokenName, prefix: prefix.orElse(""), delimeter: delimiter, optional: optional, repeating: repeating, pattern: patternEscaped))
+        tokens.append(.Complex(name: tokenName, prefix: prefix ?? "", delimeter: delimiter, optional: optional, repeating: repeating, pattern: patternEscaped))
     }
     
     // Match any characters still remaining.
@@ -178,7 +169,7 @@ func tokensToRegex (tokens:[Token], options:Options = Options()) throws -> Regex
             case .Simple(token: let lastToken): return lastToken =~ "\\/$"
             default: return false
         }
-    }.orElse(false)
+    }.getOr(else: false)
     
     var groups = [String]()
     
