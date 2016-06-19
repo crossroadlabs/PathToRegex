@@ -40,7 +40,99 @@ public enum TokenID {
 
 public enum Token {
     case simple(token:String)
-    case complex(name:TokenID, prefix:String, delimeter:String, optional:Bool, repeating:Bool, pattern:String)
+    case complex(id:TokenID, prefix:String, delimeter:String, optional:Bool, repeating:Bool, pattern:String)
+}
+
+public extension Regex {
+    private convenience init(patternGroups:PatternGroups, options:RegexOptions) throws {
+        try self.init(pattern: patternGroups.pattern, options: options, groupNames: patternGroups.groups)
+    }
+    
+    public convenience init(pathTokens:[Token], options:RegexOptions = [], pathOptions:Options = .default) throws {
+        try self.init(patternGroups: tokensToPatternGroups(pathTokens, options: pathOptions), options: options)
+    }
+    
+    public convenience init(path: String, options:RegexOptions = [], pathOptions:Options = .default) throws {
+        try self.init(pathTokens: path.parsePath(), options: options, pathOptions: pathOptions)
+    }
+}
+
+public extension String {
+    /**
+     * Parse a string for the raw tokens.
+     *
+     * @param  {string} str
+     * @return {!Array}
+     */
+    public func parsePath() -> [Token] {
+        var tokens = [Token]()
+        var key = 0
+        var index = self.startIndex
+        var path = ""
+        //    var res
+        
+        let match = PATH_REGEXP.findAll(in: self)
+        
+        for res in match {
+            let m = res.matched
+            
+            let offset = res.range.lowerBound
+            path += self.substring(with: index ..< offset)
+            index = self.index(offset, offsetBy: m.characters.count)
+            
+            let escaped = res.group(at: 1)
+            
+            // Ignore already escaped sequences.
+            if let escaped = escaped {
+                let one = escaped.index(escaped.startIndex, offsetBy: 1)
+                let end = escaped.index(one, offsetBy: 1)
+                path += escaped.substring(with: one ..< end)
+                continue
+            }
+            
+            // Push the current path onto the tokens.
+            if !path.isEmpty {
+                tokens.append(.simple(token: path))
+                path = ""
+            }
+            
+            let prefix = res.group(at: 2)
+            let name = res.group(at: 3)
+            let capture = res.group(at: 4)
+            let group = res.group(at: 5)
+            let suffix = res.group(at: 6)
+            let asterisk = res.group(at: 7)
+            
+            let repeating = suffix == "+" || suffix == "*"
+            let optional = suffix == "?" || suffix == "*"
+            let delimiter = prefix ?? "/"
+            let pattern = capture.getOr(else: group.getOr(else: asterisk.map{_ in ".*"}.getOr(else: "[^" + delimiter + "]+?")))
+            
+            let patternEscaped = escape(group: pattern)
+            let tokenName:TokenID = name.map { name in
+                .literal(name: name)
+                //wierd construct
+                }.getOr {
+                    let result:TokenID = .ordinal(index: key)
+                    key += 1
+                    return result
+            }
+            
+            tokens.append(.complex(id: tokenName, prefix: prefix ?? "", delimeter: delimiter, optional: optional, repeating: repeating, pattern: patternEscaped))
+        }
+        
+        // Match any characters still remaining.
+        if (index < self.endIndex) {
+            path += self.substring(from: index)
+        }
+        
+        // If the path exists, push it onto the end.
+        if !path.isEmpty {
+            tokens.append(.simple(token: path))
+        }
+        
+        return tokens
+    }
 }
 
 /**
@@ -82,82 +174,6 @@ private let PATH_REGEXP:Regex = [
     "([\\/.])?(?:(?:\\:(\\w+)(?:\\(((?:\\\\.|[^()])+)\\))?|\\(((?:\\\\.|[^()])+)\\))([+*?])?|(\\*))"
     ].joined(separator: "|").r!
 
-/**
-* Parse a string for the raw tokens.
-*
-* @param  {string} str
-* @return {!Array}
-*/
-private func parse(path str:String) -> [Token] {
-    var tokens = [Token]()
-    var key = 0
-    var index = str.startIndex
-    var path = ""
-//    var res
-    
-    let match = PATH_REGEXP.findAll(in: str)
-    
-    for res in match {
-        let m = res.matched
-        
-        let offset = res.range.lowerBound
-        path += str.substring(with: index ..< offset)
-        index = str.index(offset, offsetBy: m.characters.count)
-        
-        let escaped = res.group(at: 1)
-        
-        // Ignore already escaped sequences.
-        if let escaped = escaped {
-            let one = escaped.index(escaped.startIndex, offsetBy: 1)
-            let end = escaped.index(one, offsetBy: 1)
-            path += escaped.substring(with: one ..< end)
-            continue
-        }
-    
-        // Push the current path onto the tokens.
-        if !path.isEmpty {
-            tokens.append(.simple(token: path))
-            path = ""
-        }
-        
-        let prefix = res.group(at: 2)
-        let name = res.group(at: 3)
-        let capture = res.group(at: 4)
-        let group = res.group(at: 5)
-        let suffix = res.group(at: 6)
-        let asterisk = res.group(at: 7)
-        
-        let repeating = suffix == "+" || suffix == "*"
-        let optional = suffix == "?" || suffix == "*"
-        let delimiter = prefix ?? "/"
-        let pattern = capture.getOr(else: group.getOr(else: asterisk.map{_ in ".*"}.getOr(else: "[^" + delimiter + "]+?")))
-        
-        let patternEscaped = escape(group: pattern)
-        let tokenName:TokenID = name.map { name in
-            .literal(name: name)
-            //wierd construct
-        }.getOr {
-            let result:TokenID = .ordinal(index: key)
-            key += 1
-            return result
-        }
-        
-        tokens.append(.complex(name: tokenName, prefix: prefix ?? "", delimeter: delimiter, optional: optional, repeating: repeating, pattern: patternEscaped))
-    }
-    
-    // Match any characters still remaining.
-    if (index < str.endIndex) {
-        path += str.substring(from: index)
-    }
-    
-    // If the path exists, push it onto the end.
-    if !path.isEmpty {
-        tokens.append(.simple(token: path))
-    }
-    
-    return tokens
-}
-
 private typealias PatternGroups = (pattern:String, groups:[String])
 
 /**
@@ -167,7 +183,7 @@ private typealias PatternGroups = (pattern:String, groups:[String])
 * @param  {Object=} options
 * @return {!RegExp}
 */
-private func tokensToPatternGroups (_ tokens:[Token], options:Options = .default) -> PatternGroups {
+private func tokensToPatternGroups (_ tokens:[Token], options:Options) -> PatternGroups {
     let strict = options.contains(.strict)
     let end = options.contains(.end)
     
@@ -186,7 +202,7 @@ private func tokensToPatternGroups (_ tokens:[Token], options:Options = .default
     for token in tokens {
         switch token {
             case .simple(token: let token): route += escape(string: token)
-            case .complex(name: let tokenName, prefix: let prefix, delimeter: _, optional: let optional, repeating: let repeating, pattern: let pattern):
+            case .complex(id: let tokenName, prefix: let prefix, delimeter: _, optional: let optional, repeating: let repeating, pattern: let pattern):
                 
                 switch tokenName {
                     case .literal(name: let name): groups.append(name)
@@ -236,19 +252,4 @@ private func tokensToPatternGroups (_ tokens:[Token], options:Options = .default
     }
     
     return PatternGroups(pattern: "^" + route, groups: groups)
-}
-
-public extension Regex {
-    private convenience init(patternGroups:PatternGroups, options:RegexOptions) throws {
-        try self.init(pattern: patternGroups.pattern, options: options, groupNames: patternGroups.groups)
-    }
-    
-    public convenience init(pathTokens:[Token], options:RegexOptions = []) throws {
-        try self.init(patternGroups: tokensToPatternGroups(pathTokens), options: options)
-    }
-    
-    public convenience init(path: String, options:RegexOptions = []) throws {
-        let tokens = parse(path: path)
-        try self.init(pathTokens: tokens, options: options)
-    }
 }
