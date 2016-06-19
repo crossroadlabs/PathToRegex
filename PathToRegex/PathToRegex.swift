@@ -49,7 +49,7 @@ public enum Token {
 * @param  {string} str
 * @return {string}
 */
-func escape(string str:String) -> String {
+private func escape(string str:String) -> String {
     let rr = try! Regex(pattern: "([.+*?=^!:${}()[\\\\]|\\/])")
     return rr.replaceAll(in: str, with: "\\\\$1")
 }
@@ -60,7 +60,7 @@ func escape(string str:String) -> String {
 * @param  {string} group
 * @return {string}
 */
-func escape(group grp:String) -> String {
+private func escape(group grp:String) -> String {
     return "([=!:$\\/()])".r!.replaceAll(in: grp, with: "\\\\$1")
 }
 
@@ -69,7 +69,7 @@ func escape(group grp:String) -> String {
 *
 * @type {RegExp}
 */
-let PATH_REGEXP:Regex = [
+private let PATH_REGEXP:Regex = [
     // Match escaped characters that would otherwise appear in future matches.
     // This allows the user to escape special characters that won't transform.
     "(\\\\.)",
@@ -88,7 +88,7 @@ let PATH_REGEXP:Regex = [
 * @param  {string} str
 * @return {!Array}
 */
-public func parse(path str:String) -> [Token] {
+private func parse(path str:String) -> [Token] {
     var tokens = [Token]()
     var key = 0
     var index = str.startIndex
@@ -158,6 +158,8 @@ public func parse(path str:String) -> [Token] {
     return tokens
 }
 
+private typealias PatternGroups = (pattern:String, groups:[String])
+
 /**
 * Expose a function for taking tokens and returning a RegExp.
 *
@@ -165,7 +167,7 @@ public func parse(path str:String) -> [Token] {
 * @param  {Object=} options
 * @return {!RegExp}
 */
-func tokensToRegex (_ tokens:[Token], options:Options = .default) throws -> Regex {
+private func tokensToPatternGroups (_ tokens:[Token], options:Options = .default) -> PatternGroups {
     let strict = options.contains(.strict)
     let end = options.contains(.end)
     
@@ -233,10 +235,20 @@ func tokensToRegex (_ tokens:[Token], options:Options = .default) throws -> Rege
         route += "(?=\\/|$)"
     }
     
-    return try Regex(pattern: "^" + route, groupNames: groups)
+    return PatternGroups(pattern: "^" + route, groups: groups)
 }
 
-public func pathToRegex(_ path:String) throws -> Regex {
-    let tokens = parse(path: path)
-    return try tokensToRegex(tokens)
+public extension Regex {
+    private convenience init(patternGroups:PatternGroups, options:RegexOptions) throws {
+        try self.init(pattern: patternGroups.pattern, options: options, groupNames: patternGroups.groups)
+    }
+    
+    public convenience init(pathTokens:[Token], options:RegexOptions = []) throws {
+        try self.init(patternGroups: tokensToPatternGroups(pathTokens), options: options)
+    }
+    
+    public convenience init(path: String, options:RegexOptions = []) throws {
+        let tokens = parse(path: path)
+        try self.init(pathTokens: tokens, options: options)
+    }
 }
