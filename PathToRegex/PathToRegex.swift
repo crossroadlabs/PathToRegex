@@ -48,11 +48,11 @@ public extension Regex {
         try self.init(pattern: patternGroups.pattern, options: options, groupNames: patternGroups.groups)
     }
     
-    public convenience init(pathTokens:[Token], options:RegexOptions = [], pathOptions:Options = .default) throws {
+    public convenience init(pathTokens:[Token], options:RegexOptions = [], pathOptions:Options = .`default`) throws {
         try self.init(patternGroups: tokensToPatternGroups(pathTokens, options: pathOptions), options: options)
     }
     
-    public convenience init(path: String, options:RegexOptions = [], pathOptions:Options = .default) throws {
+    public convenience init(path: String, options:RegexOptions = [], pathOptions:Options = .`default`) throws {
         try self.init(pathTokens: path.parsePath(), options: options, pathOptions: pathOptions)
     }
 }
