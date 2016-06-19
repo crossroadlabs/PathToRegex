@@ -31,7 +31,7 @@ class PathToRegexTests: XCTestCase {
         XCTAssert("/" =~ digitOptionalVar)
         XCTAssertFalse("/asd" =~ digitOptionalVar)
         
-        XCTAssertEqual("123", digitOptionalVar.findFirst("/123")!.group("test")!)
+        XCTAssertEqual("123", digitOptionalVar.findFirst(in: "/123")!.group(named: "test")!)
         
         let routeDigitEnding = try! pathToRegex("/route(\\d+)")
         XCTAssertFalse("/123" =~ routeDigitEnding)
@@ -51,12 +51,12 @@ class PathToRegexTests: XCTestCase {
         XCTAssertFalse("/route/" =~ twoVars)
         XCTAssertFalse("/route/123/and" =~ twoVars)
         
-        XCTAssertEqual("route", twoVars.findFirst("/route/123")!.group("one")!)
-        XCTAssertEqual("123", twoVars.findFirst("/route/123")!.group("two")!)
+        XCTAssertEqual("route", twoVars.findFirst(in: "/route/123")!.group(named: "one")!)
+        XCTAssertEqual("123", twoVars.findFirst(in: "/route/123")!.group(named: "two")!)
         
         let methodFormat = try! pathToRegex("/api/user/:id.:format")
-        XCTAssertEqual("123", methodFormat.findFirst("/api/user/123.json")!.group("id")!)
-        XCTAssertEqual("json", methodFormat.findFirst("/api/user/123.json")!.group("format")!)
+        XCTAssertEqual("123", methodFormat.findFirst(in: "/api/user/123.json")!.group(named: "id")!)
+        XCTAssertEqual("json", methodFormat.findFirst(in: "/api/user/123.json")!.group(named: "format")!)
     } 
 }
 

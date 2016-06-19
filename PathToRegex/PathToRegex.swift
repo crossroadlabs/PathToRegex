@@ -55,7 +55,7 @@ public enum Token {
 */
 func escapeString(str:String) -> String {
     let rr = try! Regex(pattern: "([.+*?=^!:${}()[\\\\]|\\/])")
-    return rr.replaceAll(str, replacement: "\\\\$1")
+    return rr.replaceAll(in: str, with: "\\\\$1")
 }
 
 /**
@@ -65,7 +65,7 @@ func escapeString(str:String) -> String {
 * @return {string}
 */
 func escapeGroup (group:String) -> String {
-    return "([=!:$\\/()])".r!.replaceAll(group, replacement: "\\\\$1")
+    return "([=!:$\\/()])".r!.replaceAll(in: group, with: "\\\\$1")
 }
 
 /**
@@ -99,7 +99,7 @@ public func parse (str:String) -> [Token] {
     var path = ""
 //    var res
     
-    let match = PATH_REGEXP.findAll(str)
+    let match = PATH_REGEXP.findAll(in: str)
     
     for res in match {
         let m = res.matched
@@ -108,7 +108,7 @@ public func parse (str:String) -> [Token] {
         path += str.substring(with: index ..< offset)
         index = offset.advanced(by: m.characters.count)
         
-        let escaped = res.group(1)
+        let escaped = res.group(at: 1)
         
         // Ignore already escaped sequences.
         if let escaped = escaped {
@@ -123,12 +123,12 @@ public func parse (str:String) -> [Token] {
             path = ""
         }
         
-        let prefix = res.group(2)
-        let name = res.group(3)
-        let capture = res.group(4)
-        let group = res.group(5)
-        let suffix = res.group(6)
-        let asterisk = res.group(7)
+        let prefix = res.group(at: 2)
+        let name = res.group(at: 3)
+        let capture = res.group(at: 4)
+        let group = res.group(at: 5)
+        let suffix = res.group(at: 6)
+        let asterisk = res.group(at: 7)
         
         let repeating = suffix == "+" || suffix == "*"
         let optional = suffix == "?" || suffix == "*"
