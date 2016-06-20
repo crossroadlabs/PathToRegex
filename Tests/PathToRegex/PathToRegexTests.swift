@@ -62,7 +62,7 @@ class PathToRegexTests: XCTestCase {
 
 #if os(Linux)
 extension PathToRegexTests {
-	static var allTests : [(String, PathToRegexTests -> () throws -> Void)] {
+	static var allTests : [(String, (PathToRegexTests) -> () throws -> Void)] {
 		return [
 			("testPaths", testPaths),
 		]
