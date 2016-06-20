@@ -4,7 +4,10 @@ env:
 matrix:
   include:
     - script:
-        - xcodebuild test -project $MODULE_NAME.xcodeproj -scheme $MODULE_NAME
+        - xcodebuild test -project $MODULE_NAME.xcodeproj -scheme $MODULE_NAME-OSX
+        - xcodebuild test -project $MODULE_NAME.xcodeproj -scheme $MODULE_NAME-iOS
+        - xcodebuild test -project $MODULE_NAME.xcodeproj -scheme $MODULE_NAME-tvOS
+        - xcodebuild build -project $MODULE_NAME.xcodeproj -scheme $MODULE_NAME-watchOS
       os: osx
       osx_image: xcode7.3
       language: objective-c
