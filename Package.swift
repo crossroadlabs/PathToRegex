@@ -28,5 +28,5 @@ let package = Package(
             name: "PathToRegex"
         )
     ],
-    dependencies: [.Package(url: "https://github.com/crossroadlabs/Regex.git", versions: Version(0,6,0)..<Version(1,0,0))]
+    dependencies: [.Package(url: "https://github.com/crossroadlabs/Regex.git", majorVersion: 0, minor: 7)]
 )

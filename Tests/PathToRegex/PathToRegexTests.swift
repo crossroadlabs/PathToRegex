@@ -26,37 +26,37 @@ import Regex
 class PathToRegexTests: XCTestCase {
 
     func testPaths() {
-        let digitOptionalVar = try! pathToRegex("/:test(\\d+)?")
+        let digitOptionalVar = try! Regex(path: "/:test(\\d+)?")
         XCTAssert("/123" =~ digitOptionalVar)
         XCTAssert("/" =~ digitOptionalVar)
         XCTAssertFalse("/asd" =~ digitOptionalVar)
         
-        XCTAssertEqual("123", digitOptionalVar.findFirst("/123")!.group("test")!)
+        XCTAssertEqual("123", digitOptionalVar.findFirst(in: "/123")!.group(named: "test")!)
         
-        let routeDigitEnding = try! pathToRegex("/route(\\d+)")
+        let routeDigitEnding = try! Regex(path: "/route(\\d+)")
         XCTAssertFalse("/123" =~ routeDigitEnding)
         XCTAssert("/route123" =~ routeDigitEnding)
         XCTAssertFalse("/route" =~ routeDigitEnding)
         
-        let everythingStartingSlash = try! pathToRegex("/*")
+        let everythingStartingSlash = try! Regex(path: "/*")
         XCTAssert("/route123" =~ everythingStartingSlash)
         XCTAssert("/route" =~ everythingStartingSlash)
         XCTAssert("/" =~ everythingStartingSlash)
         XCTAssert("/123" =~ everythingStartingSlash)
         XCTAssert("/123/123/123" =~ everythingStartingSlash)
         
-        let twoVars = try! pathToRegex("/:one/:two")
+        let twoVars = try! Regex(path: "/:one/:two")
         XCTAssert("/route/123" =~ twoVars)
         XCTAssertFalse("/route" =~ twoVars)
         XCTAssertFalse("/route/" =~ twoVars)
         XCTAssertFalse("/route/123/and" =~ twoVars)
         
-        XCTAssertEqual("route", twoVars.findFirst("/route/123")!.group("one")!)
-        XCTAssertEqual("123", twoVars.findFirst("/route/123")!.group("two")!)
+        XCTAssertEqual("route", twoVars.findFirst(in: "/route/123")!.group(named: "one")!)
+        XCTAssertEqual("123", twoVars.findFirst(in: "/route/123")!.group(named: "two")!)
         
-        let methodFormat = try! pathToRegex("/api/user/:id.:format")
-        XCTAssertEqual("123", methodFormat.findFirst("/api/user/123.json")!.group("id")!)
-        XCTAssertEqual("json", methodFormat.findFirst("/api/user/123.json")!.group("format")!)
+        let methodFormat = try! Regex(path: "/api/user/:id.:format")
+        XCTAssertEqual("123", methodFormat.findFirst(in: "/api/user/123.json")!.group(named: "id")!)
+        XCTAssertEqual("json", methodFormat.findFirst(in: "/api/user/123.json")!.group(named: "format")!)
     } 
 }
 
