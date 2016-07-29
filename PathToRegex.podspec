@@ -6,7 +6,7 @@ Pod::Spec.new do |s|
   s.license      = { :type => 'LGPL v3', :file => 'LICENSE' }
   s.author       = { "Crossroad Labs" => "daniel@crossroadlabs.xyz" }
   s.source       = { :git => "https://github.com/crossroadlabs/PathToRegex.git", :tag => "#{s.version}" }
-  s.source_files = 'PathToRegex/**/*.swift'
+  s.source_files = 'PathToRegex/*.swift'
 
   s.ios.deployment_target = '8.0'
   s.osx.deployment_target = '10.9'
