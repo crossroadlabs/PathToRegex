@@ -23,10 +23,7 @@ import PackageDescription
 
 let package = Package(
     name: "PathToRegex",
-    targets: [
-        Target(
-            name: "PathToRegex"
-        )
-    ],
-    dependencies: [.Package(url: "https://github.com/crossroadlabs/Regex.git", majorVersion: 0, minor: 7)]
+    dependencies: [
+        .Package(url: "https://github.com/crossroadlabs/Regex.git", majorVersion: 0, minor: 7)
+    ]
 )
