@@ -21,6 +21,7 @@
 
 import XCTest
 import Regex
+
 @testable import PathToRegex
 
 class PathToRegexTests: XCTestCase {
