@@ -258,7 +258,7 @@
 				65E7DAD81C690A4300C5D00A /* Info.plist */,
 			);
 			name = PathToRegexTests;
-			path = Tests/PathToRegex;
+			path = Tests/PathToRegexTests;
 			sourceTree = "<group>";
 		};
 		923F051D1D17F4C700DB5A62 /* Mac */ = {
