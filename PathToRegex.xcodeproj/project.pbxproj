@@ -258,7 +258,7 @@
 				65E7DAD81C690A4300C5D00A /* Info.plist */,
 			);
 			name = PathToRegexTests;
-			path = Tests/PathToRegex;
+			path = Tests/PathToRegexTests;
 			sourceTree = "<group>";
 		};
 		923F051D1D17F4C700DB5A62 /* Mac */ = {
@@ -829,7 +829,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/Mac",
 				);
-				INFOPLIST_FILE = Tests/PathToRegex/Info.plist;
+				INFOPLIST_FILE = Tests/PathToRegexTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = xyz.crossroadlabs.PathToRegexTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -844,7 +844,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/Mac",
 				);
-				INFOPLIST_FILE = Tests/PathToRegex/Info.plist;
+				INFOPLIST_FILE = Tests/PathToRegexTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = xyz.crossroadlabs.PathToRegexTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -921,7 +921,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
-				INFOPLIST_FILE = Tests/PathToRegex/Info.plist;
+				INFOPLIST_FILE = Tests/PathToRegexTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = xyz.crossroadlabs.PathToRegexTests;
@@ -941,7 +941,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
-				INFOPLIST_FILE = Tests/PathToRegex/Info.plist;
+				INFOPLIST_FILE = Tests/PathToRegexTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = xyz.crossroadlabs.PathToRegexTests;
@@ -1014,7 +1014,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/tvOS",
 				);
-				INFOPLIST_FILE = Tests/PathToRegex/Info.plist;
+				INFOPLIST_FILE = Tests/PathToRegexTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = xyz.crossroadlabs.PathToRegexTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1033,7 +1033,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/tvOS",
 				);
-				INFOPLIST_FILE = Tests/PathToRegex/Info.plist;
+				INFOPLIST_FILE = Tests/PathToRegexTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = xyz.crossroadlabs.PathToRegexTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
