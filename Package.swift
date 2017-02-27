@@ -31,5 +31,6 @@ let package = Package(
     dependencies: [
         .Package(url: "https://github.com/crossroadlabs/Regex.git", "1.0.0-alpha.1"),
         .Package(url: "https://github.com/crossroadlabs/Boilerplate.git", "1.0.1"),
-    ]
+    ],
+    exclude: ["Carthage"]
 )
