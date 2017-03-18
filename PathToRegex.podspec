@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "PathToRegex"
-  s.version      = "0.4.0"
+  s.version      = "0.4.1"
   s.summary      = "A Swift library translating paths with wildcards into regular expressions"
   s.homepage     = "https://github.com/crossroadlabs/PathToRegex"
   s.license      = { :type => 'LGPL v3', :file => 'LICENSE' }
