@@ -20,10 +20,9 @@
 //===----------------------------------------------------------------------===//
 
 import Foundation
-import Boilerplate
 import Regex
 
-public struct Options : OptionSet {
+public struct Options : OptionSet, Hashable {
     public let rawValue: UInt
     
     public init(rawValue: UInt) { self.rawValue = rawValue }
@@ -77,8 +76,8 @@ public extension String {
             let m = res.matched
             
             let offset = res.range.lowerBound
-            path += self.substring(with: index ..< offset)
-            index = self.index(offset, offsetBy: m.characters.count)
+            path += self[index ..< offset]
+            index = self.index(offset, offsetBy: m.count)
             
             let escaped = res.group(at: 1)
             
@@ -86,7 +85,7 @@ public extension String {
             if let escaped = escaped {
                 let one = escaped.index(escaped.startIndex, offsetBy: 1)
                 let end = escaped.index(one, offsetBy: 1)
-                path += escaped.substring(with: one ..< end)
+                path += escaped[one ..< end]
                 continue
             }
             
@@ -112,10 +111,10 @@ public extension String {
             let tokenName:TokenID = name.map { name in
                 .literal(name: name)
                 //wierd construct
-                }.getOr {
-                    let result:TokenID = .ordinal(index: key)
-                    key += 1
-                    return result
+            }.getOr {
+                let result:TokenID = .ordinal(index: key)
+                key += 1
+                return result
             }
             
             tokens.append(.complex(id: tokenName, prefix: prefix ?? "", delimeter: delimiter, optional: optional, repeating: repeating, pattern: patternEscaped))
@@ -123,7 +122,7 @@ public extension String {
         
         // Match any characters still remaining.
         if (index < self.endIndex) {
-            path += self.substring(from: index)
+            path += self[index...]
         }
         
         // If the path exists, push it onto the end.
@@ -136,31 +135,31 @@ public extension String {
 }
 
 /**
-* Escape a regular expression string.
-*
-* @param  {string} str
-* @return {string}
-*/
+ * Escape a regular expression string.
+ *
+ * @param  {string} str
+ * @return {string}
+ */
 private func escape(string str:String) -> String {
     let rr = try! Regex(pattern: "([.+*?=^!:${}()[\\\\]|\\/])")
     return rr.replaceAll(in: str, with: "\\\\$1")
 }
 
 /**
-* Escape the capturing group by escaping special characters and meaning.
-*
-* @param  {string} group
-* @return {string}
-*/
+ * Escape the capturing group by escaping special characters and meaning.
+ *
+ * @param  {string} group
+ * @return {string}
+ */
 private func escape(group grp:String) -> String {
     return "([=!:$\\/()])".r!.replaceAll(in: grp, with: "\\\\$1")
 }
 
 /**
-* The main path matching regexp utility.
-*
-* @type {RegExp}
-*/
+ * The main path matching regexp utility.
+ *
+ * @type {RegExp}
+ */
 private let PATH_REGEXP:Regex = [
     // Match escaped characters that would otherwise appear in future matches.
     // This allows the user to escape special characters that won't transform.
@@ -172,17 +171,17 @@ private let PATH_REGEXP:Regex = [
     // "/route(\\d+)"  => [undefined, undefined, undefined, "\d+", undefined, undefined]
     // "/*"            => ["/", undefined, undefined, undefined, undefined, "*"]
     "([\\/.])?(?:(?:\\:(\\w+)(?:\\(((?:\\\\.|[^()])+)\\))?|\\(((?:\\\\.|[^()])+)\\))([+*?])?|(\\*))"
-    ].joined(separator: "|").r!
+].joined(separator: "|").r!
 
 private typealias PatternGroups = (pattern:String, groups:[String])
 
 /**
-* Expose a function for taking tokens and returning a RegExp.
-*
-* @param  {!Array}  tokens
-* @param  {Object=} options
-* @return {!RegExp}
-*/
+ * Expose a function for taking tokens and returning a RegExp.
+ *
+ * @param  {!Array}  tokens
+ * @param  {Object=} options
+ * @return {!RegExp}
+ */
 private func tokensToPatternGroups (_ tokens:[Token], options:Options) -> PatternGroups {
     let strict = options.contains(.strict)
     let end = options.contains(.end)
@@ -215,7 +214,7 @@ private func tokensToPatternGroups (_ tokens:[Token], options:Options) -> Patter
                 if repeating {
                     capture += "(?:" + prefix + capture + ")*"
                 }
-            
+                
                 if optional {
                     if prefix.isEmpty {
                         capture = "(" + capture + ")?"
@@ -236,7 +235,7 @@ private func tokensToPatternGroups (_ tokens:[Token], options:Options) -> Patter
     if !strict {
         route = {
             if endsWithSlash {
-                return route.substring(to: route.index(route.endIndex, offsetBy: -2))
+                return String(route[...route.index(route.endIndex, offsetBy: -2)])
             } else {
                 return route
             }
@@ -252,4 +251,22 @@ private func tokensToPatternGroups (_ tokens:[Token], options:Options) -> Patter
     }
     
     return PatternGroups(pattern: "^" + route, groups: groups)
+}
+
+fileprivate extension Optional {
+    func getOr(else el:@autoclosure () throws -> Wrapped) rethrows -> Wrapped {
+        return try self ?? el()
+    }
+    
+    func getOr(else el:() throws -> Wrapped) rethrows -> Wrapped {
+        return try self ?? el()
+    }
+    
+    func or(else el:@autoclosure () throws -> Wrapped?) rethrows -> Wrapped? {
+        return try self ?? el()
+    }
+    
+    func or(else el:() throws -> Wrapped?) rethrows -> Wrapped? {
+        return try self ?? el()
+    }
 }
