@@ -1,3 +1,5 @@
+// swift-tools-version:5.3
+// The swift-tools-version declares the minimum version of Swift required to build this package.
 //===--- Package.swift ------------------------------------------------===//
 //
 //Copyright (c) 2016 Daniel Leping (dileping)
@@ -23,13 +25,23 @@ import PackageDescription
 
 let package = Package(
     name: "PathToRegex",
-    targets: [
-        Target(
-            name: "PathToRegex"
-        )
+    products: [
+        // Products define the executables and libraries produced by a package, and make them visible to other packages.
+        .library(
+            name: "PathToRegex",
+            targets: ["PathToRegex"]),
     ],
     dependencies: [
-        .Package(url: "https://github.com/crossroadlabs/Regex.git", from: "1.2.0")
+        .package(
+            url: "https://github.com/crossroadlabs/Regex.git",
+            from: "1.2.0")
     ],
-    exclude: ["Carthage"]
+    targets: [
+        .target(
+            name: "PathToRegex",
+            dependencies: []),
+        .testTarget(
+            name: "PathToRegexTests",
+            dependencies: ["PathToRegex"])
+    ]
 )
